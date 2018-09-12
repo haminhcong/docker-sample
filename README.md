@@ -26,9 +26,8 @@ CMD ['-n10']
 
 But if you use ENTRYPOINT as shell form, you cannot pass any parameter like CMD to behind ENTRYPOINT COMMAND: `The shell form prevents any CMD or run command line arguments from being used,` [Links](https://docs.docker.com/engine/reference/builder/#entrypoint).
 
-What is the solution in case you need pass `ENV` value to command run in `ENTRYPOINT`, and you also need pass additional argument to docker conatainer run command like `CMD` ?
 
-My solution is put command in entrypoint to a bash script file `print_file.sh`:
+My solution in case you need pass `ENV` value to command run in `ENTRYPOINT`, and you also need pass additional argument to docker conatainer run command like `CMD`, is put command in `ENTRYPOINT` to a bash script file `print_file.sh`:
 
 ```bash
 #!/usr/bin/env bash
@@ -36,7 +35,7 @@ My solution is put command in entrypoint to a bash script file `print_file.sh`:
 tail /root/$READ_FILE "$@"
 ```
 
-and replace old command in ENTRYPOINT by execute this script file:
+and replace old command in `ENTRYPOINT` by bash command execute this script file:
 
 ```dockerfile
 ENTRYPOINT ["/bin/sh", "/root/print_file.sh"]
